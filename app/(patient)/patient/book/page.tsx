@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { CalendarDays, Clock3, CreditCard, Video } from "lucide-react";
 import { PatientShell } from "@/components/patient/PatientShell";
 
@@ -13,10 +14,12 @@ const consultationTypes = [
 ];
 
 export default function PatientBookPage() {
+  const router = useRouter();
   const [bookings, setBookings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedType, setSelectedType] = useState("video");
   const [form, setForm] = useState({ scheduledDate: "", scheduledTime: "", fee: 10000 });
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadBookings() {
@@ -33,6 +36,8 @@ export default function PatientBookPage() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setError(null);
+
     const response = await fetch("/api/bookings", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -43,7 +48,11 @@ export default function PatientBookPage() {
     if (response.ok && data.booking) {
       setBookings((current) => [data.booking, ...current]);
       setForm({ scheduledDate: "", scheduledTime: "", fee: 10000 });
+      router.push(`/patient/book/pay?bookingId=${data.booking._id}`);
+      return;
     }
+
+    setError(data.error || "Unable to create booking. Please try again.");
   }
 
   return (
@@ -63,6 +72,7 @@ export default function PatientBookPage() {
                 View consultation history
               </Link>
             </div>
+            {error && <p className="mt-4 text-sm text-rose-300">{error}</p>}
           </section>
 
           <section className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
