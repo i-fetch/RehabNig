@@ -34,11 +34,12 @@ export default function Hero() {
       <div className="mx-auto grid max-w-7xl items-center gap-16 px-6 lg:grid-cols-2">
         <motion.div
           variants={container}
-          initial="hidden"
+          initial={false}
           animate="show"
         >
           <motion.div
             variants={item}
+            initial={false}
             className="mb-6 inline-flex items-center rounded-full border border-subtle bg-surface-muted px-4 py-2 text-sm font-medium text-secondary"
           >
             <Activity className="mr-2 h-4 w-4 text-brand" />
@@ -47,6 +48,7 @@ export default function Hero() {
 
           <motion.h1
             variants={item}
+            initial={false}
             className="font-display text-5xl font-bold leading-tight text-primary lg:text-7xl"
           >
             Move Again.
@@ -58,6 +60,7 @@ export default function Hero() {
 
           <motion.p
             variants={item}
+            initial={false}
             className="mt-8 max-w-xl text-lg leading-8 text-secondary"
           >
             Personalized rehabilitation programs designed to restore mobility,
@@ -65,7 +68,7 @@ export default function Hero() {
             evidence-based care.
           </motion.p>
 
-          <motion.div variants={item} className="mt-10 flex flex-wrap gap-4">
+          <motion.div variants={item} initial={false} className="mt-10 flex flex-wrap gap-4">
             <Link
               href="/register"
               className="flex items-center gap-2 rounded-full bg-brand px-8 py-4 font-semibold text-primary shadow-brand transition hover:scale-105"
@@ -85,6 +88,7 @@ export default function Hero() {
           {/* Vitals strip — replaces the stat-card grid */}
           <motion.div
             variants={item}
+            initial={false}
             className="mt-14 flex divide-x divide-(--border-subtle) rounded-2xl border border-subtle bg-surface-raised"
           >
             {[
@@ -106,7 +110,7 @@ export default function Hero() {
 
         {/* Signature element: live gait-cycle analysis panel */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
+          initial={false}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           className="relative rounded-4xl border border-subtle bg-surface-raised p-8 shadow-brand"
@@ -168,6 +172,7 @@ export default function Hero() {
               <img
                 src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=200&q=80"
                 alt=""
+                loading="eager"
                 className="h-full w-full object-cover grayscale contrast-125"
               />
               <div className="absolute inset-0 bg-(--brand)/40 mix-blend-color" />

@@ -1,6 +1,6 @@
 "use client";
 
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -28,7 +28,11 @@ export default function LoginPage() {
       return;
     }
 
-    router.push("/");
+    const session = await getSession();
+    const role = session?.user?.role;
+    const dashboardPath = role === "care_coordinator" ? "/coordinator/dashboard" : "/patient/dashboard";
+
+    router.replace(dashboardPath);
   }
 
   return (
