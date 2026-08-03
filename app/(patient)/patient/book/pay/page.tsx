@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { CreditCard, ShieldCheck, XCircle } from "lucide-react";
 import { PatientShell } from "@/components/patient/PatientShell";
 
-export default function PatientPayPage() {
+function PatientPayContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const bookingId = searchParams.get("bookingId");
@@ -132,114 +132,122 @@ export default function PatientPayPage() {
   }
 
   return (
-    <PatientShell>
-      <main className="page-shell px-6 py-10 lg:px-8">
-        <div className="mx-auto max-w-5xl space-y-6">
-          <section className="surface-card rounded-3xl border border-subtle p-8">
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-brand">Payment</p>
-            <h1 className="mt-3 font-display text-2xl font-semibold text-primary">Secure consultation checkout</h1>
-            <p className="mt-3 text-secondary">The flat fee is ₦10,000. This screen now guides you through payment for your booking.</p>
-          </section>
+    <main className="page-shell px-6 py-10 lg:px-8">
+      <div className="mx-auto max-w-5xl space-y-6">
+        <section className="surface-card rounded-3xl border border-subtle p-8">
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-brand">Payment</p>
+          <h1 className="mt-3 font-display text-2xl font-semibold text-primary">Secure consultation checkout</h1>
+          <p className="mt-3 text-secondary">The flat fee is ₦10,000. This screen now guides you through payment for your booking.</p>
+        </section>
 
-          <section className="surface-card rounded-3xl border border-subtle p-6">
-            <div className="flex items-center gap-2">
-              <CreditCard size={18} className="text-brand" />
-              <h2 className="font-display text-xl font-semibold text-primary">Booking summary</h2>
-            </div>
+        <section className="surface-card rounded-3xl border border-subtle p-6">
+          <div className="flex items-center gap-2">
+            <CreditCard size={18} className="text-brand" />
+            <h2 className="font-display text-xl font-semibold text-primary">Booking summary</h2>
+          </div>
 
-            {loading ? (
-              <p className="mt-5 text-sm text-secondary">Loading booking details...</p>
-            ) : error ? (
-              <p className="mt-5 text-sm text-rose-300">{error}</p>
-            ) : booking ? (
-              <div className="mt-5 space-y-5">
+          {loading ? (
+            <p className="mt-5 text-sm text-secondary">Loading booking details...</p>
+          ) : error ? (
+            <p className="mt-5 text-sm text-rose-300">{error}</p>
+          ) : booking ? (
+            <div className="mt-5 space-y-5">
+              <div className="rounded-3xl border border-subtle bg-surface-muted p-5">
+                <p className="text-sm text-secondary">Type</p>
+                <p className="mt-2 font-semibold text-primary">{booking.consultationType}</p>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-3">
                 <div className="rounded-3xl border border-subtle bg-surface-muted p-5">
-                  <p className="text-sm text-secondary">Type</p>
-                  <p className="mt-2 font-semibold text-primary">{booking.consultationType}</p>
+                  <p className="text-sm text-secondary">Date</p>
+                  <p className="mt-2 font-semibold text-primary">{new Date(booking.scheduledDate).toLocaleDateString()}</p>
                 </div>
-                <div className="grid gap-4 sm:grid-cols-3">
-                  <div className="rounded-3xl border border-subtle bg-surface-muted p-5">
-                    <p className="text-sm text-secondary">Date</p>
-                    <p className="mt-2 font-semibold text-primary">{new Date(booking.scheduledDate).toLocaleDateString()}</p>
-                  </div>
-                  <div className="rounded-3xl border border-subtle bg-surface-muted p-5">
-                    <p className="text-sm text-secondary">Time</p>
-                    <p className="mt-2 font-semibold text-primary">{booking.scheduledTime}</p>
-                  </div>
-                  <div className="rounded-3xl border border-subtle bg-surface-muted p-5">
-                    <p className="text-sm text-secondary">Fee</p>
-                    <p className="mt-2 font-semibold text-primary">₦{booking.fee?.toLocaleString()}</p>
-                  </div>
-                </div>
-
                 <div className="rounded-3xl border border-subtle bg-surface-muted p-5">
-                  <p className="text-sm text-secondary">Status</p>
-                  <p className="mt-2 font-semibold text-primary">{booking.status}</p>
+                  <p className="text-sm text-secondary">Time</p>
+                  <p className="mt-2 font-semibold text-primary">{booking.scheduledTime}</p>
                 </div>
-
                 <div className="rounded-3xl border border-subtle bg-surface-muted p-5">
-                  <div className="flex items-center justify-between gap-3">
-                    <div>
-                      <p className="text-sm font-semibold text-primary">Payment actions</p>
-                      <p className="mt-2 text-sm text-secondary">Complete payment now or cancel the booking and choose another time.</p>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={handleCancelBooking}
-                      disabled={paymentLoading}
-                      className="rounded-full border border-rose-400 bg-rose-500/10 px-4 py-2 text-sm font-semibold text-rose-300 disabled:opacity-70"
-                    >
-                      Cancel booking
-                    </button>
-                  </div>
+                  <p className="text-sm text-secondary">Fee</p>
+                  <p className="mt-2 font-semibold text-primary">₦{booking.fee?.toLocaleString()}</p>
                 </div>
+              </div>
 
-                <div className="flex flex-col gap-3 sm:flex-row">
+              <div className="rounded-3xl border border-subtle bg-surface-muted p-5">
+                <p className="text-sm text-secondary">Status</p>
+                <p className="mt-2 font-semibold text-primary">{booking.status}</p>
+              </div>
+
+              <div className="rounded-3xl border border-subtle bg-surface-muted p-5">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-semibold text-primary">Payment actions</p>
+                    <p className="mt-2 text-sm text-secondary">Complete payment now or cancel the booking and choose another time.</p>
+                  </div>
                   <button
                     type="button"
-                    onClick={handlePayment}
-                    disabled={paymentLoading || booking.status !== "pending_payment"}
-                    className="inline-flex flex-1 items-center justify-center rounded-full bg-brand px-5 py-3 text-sm font-semibold text-primary disabled:opacity-70"
+                    onClick={handleCancelBooking}
+                    disabled={paymentLoading}
+                    className="rounded-full border border-rose-400 bg-rose-500/10 px-4 py-2 text-sm font-semibold text-rose-300 disabled:opacity-70"
                   >
-                    {paymentLoading ? "Processing..." : "Start payment"}
+                    Cancel booking
                   </button>
-                  {checkoutUrl && (
-                    <a
-                      href={checkoutUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex flex-1 items-center justify-center rounded-full border border-border-subtle bg-surface-muted px-5 py-3 text-sm font-semibold text-primary"
-                    >
-                      Open payment session
-                    </a>
-                  )}
                 </div>
-
-                {reference && (
-                  <div className="rounded-3xl border border-subtle bg-surface-muted p-4 text-sm text-secondary">
-                    <p>Payment reference: {reference}</p>
-                    <p className="mt-2">If you completed the payment externally, use confirm to mark it as paid.</p>
-                    <button
-                      type="button"
-                      onClick={handleConfirmPayment}
-                      disabled={paymentLoading}
-                      className="mt-3 inline-flex rounded-full bg-brand px-5 py-3 text-sm font-semibold text-primary disabled:opacity-70"
-                    >
-                      Confirm payment
-                    </button>
-                  </div>
-                )}
-
-                {message && <p className="text-sm text-emerald-300">{message}</p>}
               </div>
-            ) : null}
-          </section>
 
-          <Link href="/patient/book" className="inline-flex text-sm font-medium text-brand">
-            Back to booking
-          </Link>
-        </div>
-      </main>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <button
+                  type="button"
+                  onClick={handlePayment}
+                  disabled={paymentLoading || booking.status !== "pending_payment"}
+                  className="inline-flex flex-1 items-center justify-center rounded-full bg-brand px-5 py-3 text-sm font-semibold text-primary disabled:opacity-70"
+                >
+                  {paymentLoading ? "Processing..." : "Start payment"}
+                </button>
+                {checkoutUrl && (
+                  <a
+                    href={checkoutUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex flex-1 items-center justify-center rounded-full border border-subtle bg-surface-muted px-5 py-3 text-sm font-semibold text-primary"
+                  >
+                    Open payment session
+                  </a>
+                )}
+              </div>
+
+              {reference && (
+                <div className="rounded-3xl border border-subtle bg-surface-muted p-4 text-sm text-secondary">
+                  <p>Payment reference: {reference}</p>
+                  <p className="mt-2">If you completed the payment externally, use confirm to mark it as paid.</p>
+                  <button
+                    type="button"
+                    onClick={handleConfirmPayment}
+                    disabled={paymentLoading}
+                    className="mt-3 inline-flex rounded-full bg-brand px-5 py-3 text-sm font-semibold text-primary disabled:opacity-70"
+                  >
+                    Confirm payment
+                  </button>
+                </div>
+              )}
+
+              {message && <p className="text-sm text-emerald-300">{message}</p>}
+            </div>
+          ) : null}
+        </section>
+
+        <Link href="/patient/book" className="inline-flex text-sm font-medium text-brand">
+          Back to booking
+        </Link>
+      </div>
+    </main>
+  );
+}
+
+export default function PatientPayPage() {
+  return (
+    <PatientShell>
+      <Suspense fallback={null}>
+        <PatientPayContent />
+      </Suspense>
     </PatientShell>
   );
 }
