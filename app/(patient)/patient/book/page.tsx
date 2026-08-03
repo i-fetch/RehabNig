@@ -1,8 +1,9 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { CalendarDays, Clock3, CreditCard, Video } from "lucide-react";
 import { PatientShell } from "@/components/patient/PatientShell";
-import Booking from "@/models/Booking";
-import { dbConnect } from "@/lib/db";
 
 const consultationTypes = [
   { value: "video", label: "Video consultation", description: "Remote session with a care coordinator" },
@@ -11,9 +12,41 @@ const consultationTypes = [
   { value: "physical", label: "Physical visit", description: "In-person support" },
 ];
 
-export default async function PatientBookPage() {
-  await dbConnect();
-  const bookings = await Booking.find({}).sort({ scheduledDate: 1, scheduledTime: 1 }).limit(6).lean();
+export default function PatientBookPage() {
+  const [bookings, setBookings] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedType, setSelectedType] = useState("video");
+  const [form, setForm] = useState({ scheduledDate: "", scheduledTime: "", fee: 10000 });
+
+  useEffect(() => {
+    async function loadBookings() {
+      const response = await fetch("/api/bookings");
+      const data = await response.json();
+      if (data.bookings) {
+        setBookings(data.bookings);
+      }
+      setLoading(false);
+    }
+
+    void loadBookings();
+  }, []);
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const response = await fetch("/api/bookings", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ patientId: "patient-demo", consultationType: selectedType, scheduledDate: form.scheduledDate, scheduledTime: form.scheduledTime, fee: form.fee }),
+    });
+
+    const data = await response.json();
+    if (response.ok && data.booking) {
+      setBookings((current) => [data.booking, ...current]);
+      setForm({ scheduledDate: "", scheduledTime: "", fee: 10000 });
+    }
+  }
+
+  return (
 
   return (
     <PatientShell>
@@ -42,7 +75,12 @@ export default async function PatientBookPage() {
               </div>
               <div className="mt-5 space-y-3">
                 {consultationTypes.map((type) => (
-                  <div key={type.value} className="rounded-2xl border border-subtle bg-surface-muted p-4">
+                  <button
+                    key={type.value}
+                    type="button"
+                    onClick={() => setSelectedType(type.value)}
+                    className={`w-full rounded-2xl border p-4 text-left transition ${selectedType === type.value ? "border-brand bg-brand/10" : "border-subtle bg-surface-muted"}`}
+                  >
                     <div className="flex items-center justify-between gap-3">
                       <div>
                         <p className="font-semibold text-primary">{type.label}</p>
@@ -50,17 +88,31 @@ export default async function PatientBookPage() {
                       </div>
                       <div className="rounded-full border border-subtle px-3 py-1 text-sm text-secondary">{type.value}</div>
                     </div>
-                  </div>
+                  </button>
                 ))}
               </div>
+
+              <form onSubmit={handleSubmit} className="mt-6 space-y-3 rounded-2xl border border-subtle bg-surface-muted p-4">
+                <div>
+                  <label className="text-sm font-medium text-secondary">Preferred date</label>
+                  <input type="date" value={form.scheduledDate} onChange={(event) => setForm({ ...form, scheduledDate: event.target.value })} required className="mt-2 w-full rounded-2xl border border-subtle bg-surface px-3 py-2 text-primary" />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-secondary">Time</label>
+                  <input type="time" value={form.scheduledTime} onChange={(event) => setForm({ ...form, scheduledTime: event.target.value })} required className="mt-2 w-full rounded-2xl border border-subtle bg-surface px-3 py-2 text-primary" />
+                </div>
+                <button type="submit" className="w-full rounded-full bg-brand px-4 py-3 text-sm font-semibold text-primary">Create booking</button>
+              </form>
             </div>
 
             <div className="surface-card rounded-3xl border border-subtle p-6">
               <p className="text-sm font-semibold uppercase tracking-[0.3em] text-brand">Recent bookings</p>
               <div className="mt-4 space-y-3">
-                {bookings.length > 0 ? (
-                  bookings.map((booking: any) => (
-                    <div key={booking._id.toString()} className="rounded-2xl border border-subtle bg-surface-muted p-4">
+                {loading ? (
+                  <p className="text-sm text-secondary">Loading bookings...</p>
+                ) : bookings.length > 0 ? (
+                  bookings.slice(0, 6).map((booking: any) => (
+                    <div key={booking._id?.toString() || booking.createdAt} className="rounded-2xl border border-subtle bg-surface-muted p-4">
                       <div className="flex items-center justify-between gap-3">
                         <p className="font-semibold text-primary">{booking.consultationType}</p>
                         <div className="rounded-full bg-brand/15 px-3 py-1 text-sm font-medium text-brand">{booking.status}</div>

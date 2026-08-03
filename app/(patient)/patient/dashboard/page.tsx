@@ -1,41 +1,52 @@
 import Link from "next/link";
 import { Activity, ArrowRight, CalendarDays, CreditCard, MessageSquareText, ShieldCheck } from "lucide-react";
 import { PatientShell } from "@/components/patient/PatientShell";
+import { dbConnect } from "@/lib/db";
+import Booking from "@/models/Booking";
+import Assessment from "@/models/Assessment";
+import Payment from "@/models/Payment";
 
-const overviewCards = [
-  {
-    title: "Next consultation",
-    value: "Wednesday · 10:00 AM",
-    detail: "Video session with Amina Yusuf",
-    icon: CalendarDays,
-  },
-  {
-    title: "Assessment status",
-    value: "Completed",
-    detail: "Mobility and pain review submitted",
-    icon: Activity,
-  },
-  {
-    title: "Payment",
-    value: "₦10,000 paid",
-    detail: "Receipt available in payments history",
-    icon: CreditCard,
-  },
-];
+export default async function PatientDashboardPage() {
+  await dbConnect();
+  const [upcomingBooking, latestAssessment, latestPayment] = await Promise.all([
+    Booking.findOne({}).sort({ scheduledDate: 1, scheduledTime: 1 }).lean(),
+    Assessment.findOne({}).sort({ createdAt: -1 }).lean(),
+    Payment.findOne({}).sort({ createdAt: -1 }).lean(),
+  ]);
 
-const quickActions = [
-  { label: "Book a consultation", href: "/patient/book", description: "Choose a slot and complete checkout" },
-  { label: "Review assessments", href: "/patient/assessments", description: "Track your progress and notes" },
-  { label: "View consultations", href: "/patient/consultations", description: "See past sessions and summaries" },
-];
+  const overviewCards = [
+    {
+      title: "Next consultation",
+      value: upcomingBooking ? `${new Date(upcomingBooking.scheduledDate).toLocaleDateString()} · ${upcomingBooking.scheduledTime}` : "No booking yet",
+      detail: upcomingBooking ? `${upcomingBooking.consultationType} consultation` : "Book your next session",
+      icon: CalendarDays,
+    },
+    {
+      title: "Assessment status",
+      value: latestAssessment ? `${latestAssessment.status}` : "Pending",
+      detail: latestAssessment ? latestAssessment.condition : "Add your recovery assessment",
+      icon: Activity,
+    },
+    {
+      title: "Payment",
+      value: latestPayment ? `₦${latestPayment.amount?.toLocaleString()}` : "No payment yet",
+      detail: latestPayment ? latestPayment.status : "Payment will appear here",
+      icon: CreditCard,
+    },
+  ];
 
-const activityItems = [
-  { title: "Consultation reminder", detail: "Your video session is scheduled for tomorrow at 10:00 AM." },
-  { title: "Assessment updated", detail: "Your recovery notes were shared with your care coordinator." },
-  { title: "Payment confirmed", detail: "Your consultation fee was received successfully." },
-];
+  const quickActions = [
+    { label: "Book a consultation", href: "/patient/book", description: "Choose a slot and complete checkout" },
+    { label: "Create assessment", href: "/patient/assessment", description: "Track your progress and notes" },
+    { label: "View consultations", href: "/patient/consultations", description: "See past sessions and summaries" },
+  ];
 
-export default function PatientDashboardPage() {
+  const activityItems = [
+    { title: "Consultation reminder", detail: upcomingBooking ? `Your ${upcomingBooking.consultationType} session is booked for ${new Date(upcomingBooking.scheduledDate).toLocaleDateString()} at ${upcomingBooking.scheduledTime}.` : "Book a consultation to set your next care touchpoint." },
+    { title: "Assessment status", detail: latestAssessment ? `Your latest assessment is ${latestAssessment.status}.` : "Add your recovery assessment to keep your care plan current." },
+    { title: "Payment status", detail: latestPayment ? `Latest payment is ${latestPayment.status}.` : "Your payment record will appear here after checkout." },
+  ];
+
   return (
     <PatientShell>
       <main className="page-shell px-6 py-10 lg:px-8">

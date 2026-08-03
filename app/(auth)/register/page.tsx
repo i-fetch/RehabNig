@@ -28,7 +28,7 @@ export default function RegisterPage() {
       return;
     }
 
-    router.push("/verify-otp");
+    router.push(`/verify-otp?email=${encodeURIComponent(form.email)}`);
   }
 
   return (
