@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI;
-
-if (!MONGODB_URI) {
-  throw new Error("Please define the MONGODB_URI environment variable inside .env.local");
+function getMongoUri(): string {
+  const uri = process.env.MONGODB_URI;
+  if (!uri) {
+    throw new Error("Please define the MONGODB_URI environment variable inside .env.local");
+  }
+  return uri;
 }
 
 declare global {
@@ -29,9 +31,11 @@ export async function dbConnect() {
   }
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGODB_URI, {
-      autoIndex: true,
-    }).then((mongooseInstance) => mongooseInstance);
+    cached.promise = mongoose
+      .connect(getMongoUri(), {
+        autoIndex: true,
+      })
+      .then((mongooseInstance) => mongooseInstance);
   }
 
   cached.conn = await cached.promise;
