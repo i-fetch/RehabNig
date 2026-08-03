@@ -14,10 +14,12 @@ declare global {
   } | undefined;
 }
 
-let cached = globalThis.mongooseClient;
+const cached: {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+} = globalThis.mongooseClient ?? { conn: null, promise: null };
 
-if (!cached) {
-  cached = { conn: null, promise: null };
+if (!globalThis.mongooseClient) {
   globalThis.mongooseClient = cached;
 }
 
