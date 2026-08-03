@@ -47,8 +47,6 @@ export default function PatientBookPage() {
   }
 
   return (
-
-  return (
     <PatientShell>
       <main className="page-shell px-6 py-10 lg:px-8">
         <div className="mx-auto max-w-6xl space-y-6">
