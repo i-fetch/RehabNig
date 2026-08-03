@@ -12,6 +12,7 @@ export default function VerifyOtpPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (!searchParams) return;
     const email = searchParams.get("email");
     if (email) {
       setForm((current) => ({ ...current, email }));
