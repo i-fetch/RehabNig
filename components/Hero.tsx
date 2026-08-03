@@ -2,51 +2,66 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import {
-  ArrowRight,
-  Calendar,
-  HeartHandshake,
-  ShieldCheck,
-  Star,
-} from "lucide-react";
+import { ArrowRight, Activity } from "lucide-react";
+
+const GAIT_X = [0, 50, 100, 150, 200, 250, 300, 350, 400];
+const GAIT_Y = [60, 10, 60, 110, 60, 10, 60, 110, 60];
+const GAIT_TIMES = GAIT_X.map((_, i) => i / (GAIT_X.length - 1));
+
+const container = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.12, delayChildren: 0.1 },
+  },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
 
 export default function Hero() {
   return (
     <section className="relative overflow-hidden bg-surface pt-40 pb-24">
       <div className="absolute inset-0 -z-10">
-        <div className="absolute left-[-120px] top-0 h-96 w-96 rounded-full bg-[color:var(--brand)]/20 blur-[120px]" />
-        <div className="absolute right-[-120px] top-40 h-[420px] w-[420px] rounded-full bg-[color:var(--brand)]/20 blur-[140px]" />
-        <div className="absolute bottom-0 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-[color:var(--brand)]/15 blur-[120px]" />
+        <div className="absolute left-[-140px] top-10 h-[420px] w-[420px] rounded-full bg-[color:var(--brand)]/10 blur-[140px]" />
       </div>
 
       <div className="mx-auto grid max-w-7xl items-center gap-16 px-6 lg:grid-cols-2">
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          variants={container}
+          initial="hidden"
+          animate="show"
         >
-          <div className="mb-6 inline-flex items-center rounded-full border border-subtle bg-surface-muted px-4 py-2 text-sm font-medium text-secondary">
-            <HeartHandshake className="mr-2 h-4 w-4 text-brand" />
-            Trusted Rehabilitation Specialists
-          </div>
+          <motion.div
+            variants={item}
+            className="mb-6 inline-flex items-center rounded-full border border-subtle bg-surface-muted px-4 py-2 text-sm font-medium text-secondary"
+          >
+            <Activity className="mr-2 h-4 w-4 text-brand" />
+            Movement-First Rehabilitation
+          </motion.div>
 
-          <h1 className="font-display text-5xl font-bold leading-tight text-primary lg:text-7xl">
-            Helping You
+          <motion.h1
+            variants={item}
+            className="font-display text-5xl font-bold leading-tight text-primary lg:text-7xl"
+          >
+            Move Again.
             <br />
-            Recover With
             <span className="bg-gradient-to-r from-[color:var(--brand)] to-sky-400 bg-clip-text text-transparent">
-              {" "}
-              Confidence
+              Live Fully.
             </span>
-          </h1>
+          </motion.h1>
 
-          <p className="mt-8 max-w-xl text-lg leading-8 text-secondary">
+          <motion.p
+            variants={item}
+            className="mt-8 max-w-xl text-lg leading-8 text-secondary"
+          >
             Personalized rehabilitation programs designed to restore mobility,
             independence and quality of life through compassionate,
             evidence-based care.
-          </p>
+          </motion.p>
 
-          <div className="mt-10 flex flex-wrap gap-4">
+          <motion.div variants={item} className="mt-10 flex flex-wrap gap-4">
             <Link
               href="/register"
               className="flex items-center gap-2 rounded-full bg-brand px-8 py-4 font-semibold text-primary shadow-brand transition hover:scale-105"
@@ -61,71 +76,103 @@ export default function Hero() {
             >
               Explore Services
             </Link>
-          </div>
+          </motion.div>
 
-          <div className="mt-14 grid grid-cols-3 gap-8">
+          {/* Vitals strip — replaces the stat-card grid */}
+          <motion.div
+            variants={item}
+            className="mt-14 flex divide-x divide-[color:var(--border-subtle)] rounded-2xl border border-subtle bg-surface-raised"
+          >
             {[
-              ["5000+", "Patients"],
+              ["5,000+", "Patients"],
               ["98%", "Recovery Rate"],
               ["20+", "Specialists"],
             ].map(([number, label]) => (
-              <div key={label}>
-                <h2 className="text-3xl font-bold text-primary">{number}</h2>
-                <p className="mt-1 text-sm text-muted">{label}</p>
+              <div key={label} className="flex-1 px-6 py-5">
+                <p className="font-mono text-[11px] uppercase tracking-wider text-muted">
+                  {label}
+                </p>
+                <p className="mt-1 text-2xl font-bold text-primary">
+                  {number}
+                </p>
               </div>
             ))}
-          </div>
+          </motion.div>
         </motion.div>
 
+        {/* Signature element: live gait-cycle analysis panel */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1 }}
-          className="relative"
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="relative rounded-[32px] border border-subtle bg-surface-raised p-8 shadow-brand"
         >
-          <div className="overflow-hidden rounded-[40px] border border-subtle bg-surface-raised shadow-brand">
-            <img
-              src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=80"
-              alt="Rehabilitation"
-              className="h-[650px] w-full object-cover"
-            />
+          <div className="flex items-center justify-between">
+            <p className="font-mono text-xs uppercase tracking-wider text-muted">
+              Gait Cycle Analysis
+            </p>
+            <span className="flex items-center gap-2 font-mono text-xs text-brand">
+              <motion.span
+                animate={{ opacity: [1, 0.3, 1] }}
+                transition={{ duration: 1.6, repeat: Infinity }}
+                className="h-2 w-2 rounded-full bg-brand"
+              />
+              Live
+            </span>
           </div>
 
-          <motion.div
-            animate={{ y: [0, -10, 0] }}
-            transition={{ repeat: Infinity, duration: 4 }}
-            className="absolute -left-8 top-10 w-64 rounded-3xl border border-subtle bg-surface-raised p-5 shadow-brand"
+          <svg
+            viewBox="0 0 400 120"
+            className="mt-6 w-full overflow-visible"
+            preserveAspectRatio="none"
           >
-            <div className="flex items-center gap-3">
-              <Calendar className="text-brand" />
-              <div>
-                <p className="font-semibold text-primary">Consultation Booked</p>
-                <span className="text-sm text-muted">Monday • 10:30 AM</span>
-              </div>
+            <motion.path
+              d="M0,60 C25,10 75,10 100,60 C125,110 175,110 200,60 C225,10 275,10 300,60 C325,110 375,110 400,60"
+              fill="none"
+              stroke="var(--brand)"
+              strokeWidth={3}
+              strokeLinecap="round"
+              initial={{ pathLength: 0, opacity: 0.4 }}
+              animate={{ pathLength: 1, opacity: 1 }}
+              transition={{ duration: 1.8, ease: "easeInOut" }}
+            />
+            <motion.circle
+              r={6}
+              fill="var(--brand)"
+              className="drop-shadow-[0_0_8px_var(--brand)]"
+              animate={{ cx: GAIT_X, cy: GAIT_Y }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "linear",
+                delay: 1.8,
+                times: GAIT_TIMES,
+              }}
+            />
+          </svg>
+
+          <div className="mt-3 flex justify-between font-mono text-[10px] uppercase tracking-wider text-muted">
+            <span>Heel Strike</span>
+            <span>Mid-Stance</span>
+            <span>Toe-Off</span>
+            <span>Swing</span>
+          </div>
+
+          {/* Real patient reference, grounding the chart */}
+          <div className="mt-8 flex items-center gap-4 rounded-2xl border border-subtle bg-surface-muted p-4">
+            <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl">
+              <img
+                src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=200&q=80"
+                alt=""
+                className="h-full w-full object-cover grayscale contrast-125"
+              />
+              <div className="absolute inset-0 bg-[color:var(--brand)]/40 mix-blend-color" />
             </div>
-          </motion.div>
-
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ repeat: Infinity, duration: 5 }}
-            className="absolute -right-8 bottom-24 w-64 rounded-3xl border border-subtle bg-surface-raised p-5 shadow-brand"
-          >
-            <div className="flex items-center justify-between">
-              <span className="font-semibold text-primary">Recovery Progress</span>
-              <ShieldCheck className="text-emerald-400" />
-            </div>
-
-            <div className="mt-4 h-3 overflow-hidden rounded-full bg-surface-muted">
-              <div className="h-full w-[82%] rounded-full bg-brand" />
-            </div>
-
-            <p className="mt-2 text-sm text-muted">82% Completed</p>
-          </motion.div>
-
-          <div className="absolute left-10 bottom-8 rounded-2xl border border-subtle bg-surface-raised px-5 py-3 shadow-brand">
-            <div className="flex items-center gap-2">
-              <Star className="fill-yellow-400 text-yellow-400" size={18} />
-              <span className="font-semibold text-primary">4.9/5 Patient Rating</span>
+            <div>
+              <p className="font-semibold text-primary">Full mobility restored</p>
+              <p className="text-sm text-muted">
+                Patient case · Week 6 of program (anonymized)
+              </p>
             </div>
           </div>
         </motion.div>
