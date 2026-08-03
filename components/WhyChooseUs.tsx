@@ -38,8 +38,8 @@ const features = [
 export default function WhyChooseUs() {
   return (
     <section className="relative overflow-hidden bg-surface py-32">
-      <div className="absolute left-0 top-0 h-[500px] w-[500px] rounded-full bg-[color:var(--brand)]/15 blur-[140px]" />
-      <div className="absolute right-0 bottom-0 h-[500px] w-[500px] rounded-full bg-[color:var(--brand)]/10 blur-[140px]" />
+      <div className="absolute left-0 top-0 h-125 w-125 rounded-full bg-(--brand)/15 blur-[140px]" />
+      <div className="absolute right-0 bottom-0 h-125 w-125 rounded-full bg-(--brand)/10 blur-[140px]" />
 
       <div className="mx-auto grid max-w-7xl gap-20 px-6 lg:grid-cols-2">
         <motion.div
@@ -66,7 +66,7 @@ export default function WhyChooseUs() {
 
           <div className="mt-12 rounded-[36px] bg-brand p-10 text-primary shadow-brand">
             <h3 className="text-4xl font-bold">98%</h3>
-            <p className="mt-3 text-[color:rgba(255,255,255,0.85)]">Patient Satisfaction Rate</p>
+            <p className="mt-3 text-[rgba(255,255,255,0.85)]">Patient Satisfaction Rate</p>
 
             <div className="mt-8 h-3 rounded-full bg-surface-muted">
               <div className="h-full w-[98%] rounded-full bg-surface-raised" />

@@ -86,7 +86,7 @@ export default function Services() {
                 whileHover={{
                   y: -10,
                 }}
-                className="group relative overflow-hidden rounded-[32px] border border-subtle bg-surface-raised p-8 shadow-brand transition-all"
+                className="group relative overflow-hidden rounded-4xl border border-subtle bg-surface-raised p-8 shadow-brand transition-all"
               >
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(63,140,166,0.16),transparent_60%)] opacity-0 transition group-hover:opacity-100" />
 

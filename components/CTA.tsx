@@ -11,7 +11,7 @@ export default function CTA() {
               Ready To Begin Your Recovery Journey?
             </h2>
 
-            <p className="mt-6 text-xl leading-9 text-[color:rgba(255,255,255,0.88)]">
+            <p className="mt-6 text-xl leading-9 text-[rgba(255,255,255,0.88)]">
               Our rehabilitation specialists are ready to help you regain
               confidence, mobility and independence.
             </p>

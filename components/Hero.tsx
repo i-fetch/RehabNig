@@ -17,14 +17,18 @@ const container = {
 
 const item = {
   hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" as const },
+  },
 };
 
 export default function Hero() {
   return (
     <section className="relative overflow-hidden bg-surface pt-40 pb-24">
       <div className="absolute inset-0 -z-10">
-        <div className="absolute left-[-140px] top-10 h-[420px] w-[420px] rounded-full bg-[color:var(--brand)]/10 blur-[140px]" />
+        <div className="absolute -left-35 top-10 h-105 w-105 rounded-full bg-(--brand)/10 blur-[140px]" />
       </div>
 
       <div className="mx-auto grid max-w-7xl items-center gap-16 px-6 lg:grid-cols-2">
@@ -47,7 +51,7 @@ export default function Hero() {
           >
             Move Again.
             <br />
-            <span className="bg-gradient-to-r from-[color:var(--brand)] to-sky-400 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-(--brand) to-sky-400 bg-clip-text text-transparent">
               Live Fully.
             </span>
           </motion.h1>
@@ -81,7 +85,7 @@ export default function Hero() {
           {/* Vitals strip — replaces the stat-card grid */}
           <motion.div
             variants={item}
-            className="mt-14 flex divide-x divide-[color:var(--border-subtle)] rounded-2xl border border-subtle bg-surface-raised"
+            className="mt-14 flex divide-x divide-(--border-subtle) rounded-2xl border border-subtle bg-surface-raised"
           >
             {[
               ["5,000+", "Patients"],
@@ -105,7 +109,7 @@ export default function Hero() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative rounded-[32px] border border-subtle bg-surface-raised p-8 shadow-brand"
+          className="relative rounded-4xl border border-subtle bg-surface-raised p-8 shadow-brand"
         >
           <div className="flex items-center justify-between">
             <p className="font-mono text-xs uppercase tracking-wider text-muted">
@@ -166,7 +170,7 @@ export default function Hero() {
                 alt=""
                 className="h-full w-full object-cover grayscale contrast-125"
               />
-              <div className="absolute inset-0 bg-[color:var(--brand)]/40 mix-blend-color" />
+              <div className="absolute inset-0 bg-(--brand)/40 mix-blend-color" />
             </div>
             <div>
               <p className="font-semibold text-primary">Full mobility restored</p>

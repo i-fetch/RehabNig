@@ -57,7 +57,7 @@ export default function RecoveryJourney() {
               <motion.div
                 key={step.title}
                 whileHover={{ y: -8 }}
-                className="relative rounded-[32px] border border-subtle bg-surface-raised p-8 shadow-brand"
+                className="relative rounded-4xl border border-subtle bg-surface-raised p-8 shadow-brand"
               >
                 <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-brand text-primary">
                   <Icon size={30} />
