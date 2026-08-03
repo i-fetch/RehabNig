@@ -39,7 +39,12 @@ export async function POST(request: NextRequest) {
   });
 
   await user.save();
-  await sendOtpEmail(user.email, otpCode);
+
+  try {
+    await sendOtpEmail(user.email, otpCode);
+  } catch (error) {
+    console.warn("OTP email delivery failed, but registration succeeded:", error);
+  }
 
   return NextResponse.json({ success: true, email: user.email });
 }
