@@ -26,12 +26,12 @@ const item = {
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden bg-surface pt-40 pb-24">
+    <section className="relative overflow-hidden bg-surface px-4 pb-16 pt-28 sm:px-6 sm:pb-24 sm:pt-40">
       <div className="absolute inset-0 -z-10">
         <div className="absolute -left-35 top-10 h-105 w-105 rounded-full bg-(--brand)/10 blur-[140px]" />
       </div>
 
-      <div className="mx-auto grid max-w-7xl items-center gap-16 px-6 lg:grid-cols-2">
+      <div className="mx-auto grid max-w-7xl items-center gap-8 px-0 sm:gap-16 lg:grid-cols-2 lg:px-6">
         <motion.div
           variants={container}
           initial={false}
@@ -49,7 +49,7 @@ export default function Hero() {
           <motion.h1
             variants={item}
             initial={false}
-            className="font-display text-5xl font-bold leading-tight text-primary lg:text-7xl"
+            className="font-display text-4xl font-bold leading-tight text-primary sm:text-5xl lg:text-7xl"
           >
             Move Again.
             <br />
@@ -61,17 +61,17 @@ export default function Hero() {
           <motion.p
             variants={item}
             initial={false}
-            className="mt-8 max-w-xl text-lg leading-8 text-secondary"
+            className="mt-6 max-w-xl text-base leading-7 text-secondary sm:mt-8 sm:text-lg sm:leading-8"
           >
             Personalized rehabilitation programs designed to restore mobility,
             independence and quality of life through compassionate,
             evidence-based care.
           </motion.p>
 
-          <motion.div variants={item} initial={false} className="mt-10 flex flex-wrap gap-4">
+          <motion.div variants={item} initial={false} className="mt-8 flex flex-wrap gap-3 sm:mt-10 sm:gap-4">
             <Link
               href="/register"
-              className="flex items-center gap-2 rounded-full bg-brand px-8 py-4 font-semibold text-primary shadow-brand transition hover:scale-105"
+              className="flex w-full items-center justify-center gap-2 rounded-full bg-brand px-6 py-3 font-semibold text-primary shadow-brand transition hover:scale-105 sm:w-auto sm:px-8 sm:py-4"
             >
               Book Consultation
               <ArrowRight size={18} />
@@ -79,7 +79,7 @@ export default function Hero() {
 
             <Link
               href="#services"
-              className="rounded-full border border-subtle bg-surface-raised px-8 py-4 font-semibold text-secondary transition hover:bg-surface-muted"
+              className="flex w-full items-center justify-center rounded-full border border-subtle bg-surface-raised px-6 py-3 font-semibold text-secondary transition hover:bg-surface-muted sm:w-auto sm:px-8 sm:py-4"
             >
               Explore Services
             </Link>
@@ -89,7 +89,7 @@ export default function Hero() {
           <motion.div
             variants={item}
             initial={false}
-            className="mt-14 flex divide-x divide-(--border-subtle) rounded-2xl border border-subtle bg-surface-raised"
+            className="mt-10 flex flex-col overflow-hidden rounded-2xl border border-subtle bg-surface-raised sm:mt-14 sm:flex-row sm:divide-x sm:divide-(--border-subtle)"
           >
             {[
               ["5,000+", "Patients"],
@@ -113,7 +113,7 @@ export default function Hero() {
           initial={false}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative rounded-4xl border border-subtle bg-surface-raised p-8 shadow-brand"
+          className="relative w-full max-w-xl rounded-3xl border border-subtle bg-surface-raised p-4 shadow-brand sm:p-8"
         >
           <div className="flex items-center justify-between">
             <p className="font-mono text-xs uppercase tracking-wider text-muted">
@@ -131,7 +131,7 @@ export default function Hero() {
 
           <svg
             viewBox="0 0 400 120"
-            className="mt-6 w-full overflow-visible"
+            className="mt-6 h-32 w-full overflow-visible sm:h-40"
             preserveAspectRatio="none"
           >
             <motion.path
@@ -159,7 +159,7 @@ export default function Hero() {
             />
           </svg>
 
-          <div className="mt-3 flex justify-between font-mono text-[10px] uppercase tracking-wider text-muted">
+          <div className="mt-3 flex justify-between font-mono text-[9px] uppercase tracking-wider text-muted sm:text-[10px]">
             <span>Heel Strike</span>
             <span>Mid-Stance</span>
             <span>Toe-Off</span>
@@ -167,7 +167,7 @@ export default function Hero() {
           </div>
 
           {/* Real patient reference, grounding the chart */}
-          <div className="mt-8 flex items-center gap-4 rounded-2xl border border-subtle bg-surface-muted p-4">
+          <div className="mt-6 flex flex-col items-start gap-3 rounded-2xl border border-subtle bg-surface-muted p-4 sm:mt-8 sm:flex-row sm:items-center sm:gap-4">
             <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl">
               <img
                 src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=200&q=80"
