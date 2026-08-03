@@ -1,26 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
+  --bg: #0b0d10;
+  --surface-base: #0b0d10;
+  --surface-raised: #12161b;
+  --surface-muted: #15181c;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-strong: #262b31;
+  --text-primary: #f3f5f8;
+  --text-secondary: #b9c2ce;
+  --text-muted: #7f8a95;
+  --brand: #3f8ca6;
+  --brand-strong: #4b9cb6;
+  --selection: rgba(63, 140, 166, 0.24);
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  min-height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at 14% 4%, rgba(63, 140, 166, 0.12), transparent 20%),
+    radial-gradient(circle at 92% 8%, rgba(56, 189, 248, 0.12), transparent 18%),
+    radial-gradient(circle at 10% 100%, rgba(16, 185, 129, 0.08), transparent 30%),
+    var(--surface-base);
+  color: var(--text-primary);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: var(--selection);
+  color: var(--text-primary);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+.font-display {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.font-body {
+  font-family: 'Inter', sans-serif;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.page-shell {
+  min-height: 100vh;
+  background: var(--surface-base);
+  color: var(--text-primary);
+}
+
+.bg-surface {
+  background-color: var(--surface-base);
+}
+
+.bg-surface-raised {
+  background-color: var(--surface-raised);
+}
+
+.bg-surface-muted {
+  background-color: var(--surface-muted);
+}
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.border-subtle {
+  border-color: var(--border-subtle);
+}
+
+.border-strong {
+  border-color: var(--border-strong);
+}
+
+.text-brand {
+  color: var(--brand);
+}
+
+.bg-brand {
+  background: linear-gradient(90deg, var(--brand) 0%, var(--brand-strong) 100%);
+  color: var(--text-primary);
+}
+
+.surface-card {
+  background: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
+}
+
+.form-card {
+  background: rgba(21, 24, 28, 0.95);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.28);
+}
+
+.button-outline {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.input-field {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.shadow-brand {
+  box-shadow: 0 18px 45px rgba(63, 140, 166, 0.18);
 }

@@ -36,7 +36,7 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 =======
-# RehabConnect
+# Rehab Nigeria
 
 A modern digital rehabilitation consultation platform connecting patients with professional care coordinators through secure online consultations.
 >>>>>>> 170e4488794f1ad70b39104020033375c3a2c0f6

@@ -1,0 +1,3 @@
+export const OTP_EXPIRY_MINUTES = 10;
+export const OTP_RESEND_WAIT_SECONDS = 60;
+export const FLAT_CONSULTATION_FEE_NGN = 10000;
